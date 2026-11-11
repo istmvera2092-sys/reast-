@@ -57,3 +57,33 @@ export const DRINKS: MenuItem[] = drinks.map(([id, name]) => ({
   image: `${import.meta.env.BASE_URL}assets/drinks/${id}.webp`,
   kind: 'drink',
 }))
+
+const halloweenFoods = [
+  ['melon', 'melon'],
+  ['bacon', 'bacon'],
+  ['peas', 'peas'],
+  ['peach', 'peach'],
+] as const
+
+export const HALLOWEEN_FOOD: MenuItem[] = [
+  ...halloweenFoods.map(([id, name]) => ({
+    id,
+    name,
+    image: `${import.meta.env.BASE_URL}assets/food/${id}.webp`,
+    kind: 'food' as const,
+  })),
+  ...FOOD.filter(item => item.id === 'toast'),
+]
+
+export const HALLOWEEN_DRINKS: MenuItem[] = [{
+  id: 'juice',
+  name: 'juice',
+  image: `${import.meta.env.BASE_URL}assets/drinks/juice.webp`,
+  kind: 'drink',
+}]
+
+export const EXTRA_SECTIONS = {
+  halloween: { label: 'HALLOWEEN', food: HALLOWEEN_FOOD, drinks: HALLOWEEN_DRINKS },
+} as const
+
+export type SectionId = keyof typeof EXTRA_SECTIONS

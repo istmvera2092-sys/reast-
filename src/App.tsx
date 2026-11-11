@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
 import { OrderResult } from './components/OrderResult'
 import { Waiter } from './components/Waiter'
-import { ORDER_ATLAS_URL } from './data/menu'
+import { EXTRA_SECTIONS, ORDER_ATLAS_URL, type SectionId } from './data/menu'
 import { generateOrder, type Order } from './utils/generateOrder'
 import './App.css'
 
 function App() {
   const [order, setOrder] = useState<Order | null>(null)
   const [orderNumber, setOrderNumber] = useState(0)
+  const [selectedSections, setSelectedSections] = useState<SectionId[]>([])
 
   useEffect(() => {
     const image = new Image()
@@ -16,8 +17,14 @@ function App() {
   }, [])
 
   function handleOrder() {
-    setOrder(previous => generateOrder(previous))
+    setOrder(previous => generateOrder(previous, Math.random, selectedSections))
     setOrderNumber(number => number + 1)
+  }
+
+  function toggleSection(section: SectionId) {
+    setSelectedSections(previous => previous.includes(section)
+      ? previous.filter(value => value !== section)
+      : [...previous, section])
   }
 
   return (
@@ -26,6 +33,21 @@ function App() {
         <Waiter />
         <div className="game-shell__inner">
           <OrderResult order={order} number={orderNumber} />
+          <div className="section-picker" role="group" aria-label="Extra menu sections">
+            <span className="section-picker__label">ADD A SECTION</span>
+            {(Object.keys(EXTRA_SECTIONS) as SectionId[]).map(section => (
+              <button
+                className="section-picker__button"
+                type="button"
+                aria-pressed={selectedSections.includes(section)}
+                onClick={() => toggleSection(section)}
+                key={section}
+              >
+                <span aria-hidden="true">✦</span>
+                {EXTRA_SECTIONS[section].label}
+              </button>
+            ))}
+          </div>
           <div className="order-action">
             <span className="order-action__line" aria-hidden="true" />
             <button className="order-button" type="button" onClick={handleOrder}>

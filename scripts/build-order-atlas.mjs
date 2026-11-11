@@ -2,7 +2,6 @@ import { readdir, writeFile } from 'node:fs/promises'
 import sharp from 'sharp'
 
 const columns = 4
-const rows = 8
 const cellSize = 192
 const artSize = 180
 
@@ -12,7 +11,8 @@ for (const kind of ['food', 'drinks']) {
   for (const file of files) entries.push({ kind: kind === 'drinks' ? 'drink' : kind, id: file.replace(/\.webp$/, ''), file: `public/assets/${kind}/${file}` })
 }
 
-if (entries.length !== 31) throw new Error(`Expected 31 order illustrations, found ${entries.length}`)
+if (entries.length !== 36) throw new Error(`Expected 36 unique order illustrations, found ${entries.length}`)
+const rows = Math.ceil(entries.length / columns)
 
 const positions = {}
 const layers = []

@@ -19,7 +19,12 @@ export function OrderResult({ order, number }: { order: Order | null; number: nu
           <div className="order-result__items">
             {[...order.food, order.drink].map(item => {
               const [column, row] = positions[`${item.kind}:${item.id}`]
-              const position = { '--atlas-column': column, '--atlas-row': row } as CSSProperties
+              const position = {
+                '--atlas-column': column,
+                '--atlas-row': row,
+                '--atlas-columns': atlas.columns,
+                '--atlas-rows': atlas.rows,
+              } as CSSProperties
               return <div className="order-item" key={item.id}>
                 <div className="order-item__picture">
                   <img src={ORDER_ATLAS_URL} alt={`${item.name} illustration`} style={position} />

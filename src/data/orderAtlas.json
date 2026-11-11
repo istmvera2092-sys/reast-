@@ -1,130 +1,150 @@
 {
   "columns": 4,
-  "rows": 8,
+  "rows": 9,
   "positions": {
     "food:apples": [
       0,
       0
     ],
-    "food:bananas": [
+    "food:bacon": [
       1,
+      0
+    ],
+    "food:bananas": [
+      2,
       0
     ],
     "food:cheese": [
-      2,
+      3,
       0
     ],
     "food:doughnuts": [
-      3,
-      0
+      0,
+      1
     ],
     "food:eggs": [
-      0,
+      1,
       1
     ],
     "food:fish": [
-      1,
+      2,
       1
     ],
     "food:grapes": [
-      2,
+      3,
       1
     ],
     "food:hot-dogs": [
-      3,
-      1
+      0,
+      2
     ],
     "food:ice-cream": [
-      0,
+      1,
       2
     ],
     "food:ketchup": [
-      1,
+      2,
       2
     ],
     "food:lettuce": [
-      2,
+      3,
       2
     ],
     "food:mayonnaise": [
-      3,
-      2
+      0,
+      3
+    ],
+    "food:melon": [
+      1,
+      3
     ],
     "food:noodles": [
-      0,
+      2,
       3
     ],
     "food:olives": [
-      1,
+      3,
       3
+    ],
+    "food:peach": [
+      0,
+      4
+    ],
+    "food:peas": [
+      1,
+      4
     ],
     "food:pizza": [
       2,
-      3
+      4
     ],
     "food:quiche": [
       3,
-      3
+      4
     ],
     "food:rice": [
       0,
-      4
+      5
     ],
     "food:salad": [
       1,
-      4
+      5
     ],
     "food:toast": [
       2,
-      4
+      5
     ],
     "food:vegetables": [
       3,
-      4
+      5
     ],
     "food:waffles": [
       0,
-      5
+      6
     ],
     "food:yoghurt": [
       1,
-      5
+      6
     ],
     "food:zucchini": [
       2,
-      5
+      6
     ],
     "drink:cola": [
       3,
-      5
+      6
     ],
     "drink:hot-chocolate": [
       0,
-      6
+      7
+    ],
+    "drink:juice": [
+      1,
+      7
     ],
     "drink:lemonade": [
-      1,
-      6
+      2,
+      7
     ],
     "drink:milk": [
-      2,
-      6
+      3,
+      7
     ],
     "drink:milkshake": [
-      3,
-      6
+      0,
+      8
     ],
     "drink:orange-juice": [
-      0,
-      7
+      1,
+      8
     ],
     "drink:tea": [
-      1,
-      7
+      2,
+      8
     ],
     "drink:water": [
-      2,
-      7
+      3,
+      8
     ]
   }
 }
