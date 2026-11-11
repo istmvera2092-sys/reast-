@@ -2,6 +2,8 @@
 
 A browser mini-game for children practicing English food and drink words. Press **ORDER** to reveal a new random meal with 2–4 different foods and one drink. All 31 vocabulary items remain in the order pool; only the current order is shown.
 
+The game stage is capped at a 4:3 aspect ratio for standard projectors. On widescreen displays it stays centered with side margins; on phones the order card stacks vertically.
+
 ## Run locally
 
 ```bash
