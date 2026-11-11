@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { existsSync, readdirSync, statSync } from 'node:fs'
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
 import { build } from 'esbuild'
 
 async function loadTypeScript(entryPoint) {
@@ -23,6 +23,16 @@ const all = [...FOOD, ...DRINKS]
 assert.equal(new Set(all.map(item => item.id)).size, 31)
 for (const item of all) assert.ok(existsSync(`public${item.image}`), `Missing illustration: ${item.image}`)
 assert.ok(all.every(item => item.image.endsWith('.webp')))
+const atlas = JSON.parse(readFileSync('src/data/orderAtlas.json', 'utf8'))
+assert.ok(existsSync('public/assets/order-atlas.webp'))
+assert.ok(statSync('public/assets/order-atlas.webp').size < 300_000, 'Order atlas exceeds the 300 KB budget')
+assert.equal(atlas.columns * atlas.rows, 32)
+assert.deepEqual(Object.keys(atlas.positions).sort(), all.map(item => `${item.kind}:${item.id}`).sort())
+assert.equal(new Set(Object.values(atlas.positions).map(position => position.join(','))).size, 31)
+for (const position of Object.values(atlas.positions)) {
+  assert.ok(position[0] >= 0 && position[0] < atlas.columns)
+  assert.ok(position[1] >= 0 && position[1] < atlas.rows)
+}
 assert.ok(existsSync('public/assets/waiter.webp'))
 assert.ok(existsSync('public/assets/restaurant-bg.webp'))
 const webpPaths = [...all.map(item => `public${item.image}`), 'public/assets/waiter.webp', 'public/assets/restaurant-bg.webp']
@@ -57,4 +67,4 @@ assert.equal(seenDrinks.size, 8)
 const forcedFirst = generateOrder(null, () => 0)
 const forcedSecond = generateOrder(forcedFirst, () => 0)
 assert.notEqual(signature(forcedFirst), signature(forcedSecond))
-console.log(`Verified exact menu, 33 WebP assets (${(webpBytes / 1e6).toFixed(1)} MB), and 2000 valid changing orders.`)
+console.log(`Verified exact menu, ${(statSync('public/assets/order-atlas.webp').size / 1e3).toFixed(0)} KB order atlas, 33 source WebPs, and 2000 valid changing orders.`)

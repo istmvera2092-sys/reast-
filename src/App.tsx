@@ -1,12 +1,19 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { OrderResult } from './components/OrderResult'
 import { Waiter } from './components/Waiter'
+import { ORDER_ATLAS_URL } from './data/menu'
 import { generateOrder, type Order } from './utils/generateOrder'
 import './App.css'
 
 function App() {
   const [order, setOrder] = useState<Order | null>(null)
   const [orderNumber, setOrderNumber] = useState(0)
+
+  useEffect(() => {
+    const image = new Image()
+    image.src = ORDER_ATLAS_URL
+    void image.decode().catch(() => {})
+  }, [])
 
   function handleOrder() {
     setOrder(previous => generateOrder(previous))

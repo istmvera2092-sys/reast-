@@ -1,0 +1,130 @@
+{
+  "columns": 4,
+  "rows": 8,
+  "positions": {
+    "food:apples": [
+      0,
+      0
+    ],
+    "food:bananas": [
+      1,
+      0
+    ],
+    "food:cheese": [
+      2,
+      0
+    ],
+    "food:doughnuts": [
+      3,
+      0
+    ],
+    "food:eggs": [
+      0,
+      1
+    ],
+    "food:fish": [
+      1,
+      1
+    ],
+    "food:grapes": [
+      2,
+      1
+    ],
+    "food:hot-dogs": [
+      3,
+      1
+    ],
+    "food:ice-cream": [
+      0,
+      2
+    ],
+    "food:ketchup": [
+      1,
+      2
+    ],
+    "food:lettuce": [
+      2,
+      2
+    ],
+    "food:mayonnaise": [
+      3,
+      2
+    ],
+    "food:noodles": [
+      0,
+      3
+    ],
+    "food:olives": [
+      1,
+      3
+    ],
+    "food:pizza": [
+      2,
+      3
+    ],
+    "food:quiche": [
+      3,
+      3
+    ],
+    "food:rice": [
+      0,
+      4
+    ],
+    "food:salad": [
+      1,
+      4
+    ],
+    "food:toast": [
+      2,
+      4
+    ],
+    "food:vegetables": [
+      3,
+      4
+    ],
+    "food:waffles": [
+      0,
+      5
+    ],
+    "food:yoghurt": [
+      1,
+      5
+    ],
+    "food:zucchini": [
+      2,
+      5
+    ],
+    "drink:cola": [
+      3,
+      5
+    ],
+    "drink:hot-chocolate": [
+      0,
+      6
+    ],
+    "drink:lemonade": [
+      1,
+      6
+    ],
+    "drink:milk": [
+      2,
+      6
+    ],
+    "drink:milkshake": [
+      3,
+      6
+    ],
+    "drink:orange-juice": [
+      0,
+      7
+    ],
+    "drink:tea": [
+      1,
+      7
+    ],
+    "drink:water": [
+      2,
+      7
+    ]
+  }
+}

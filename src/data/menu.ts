@@ -5,6 +5,8 @@ export type MenuItem = {
   kind: 'food' | 'drink'
 }
 
+export const ORDER_ATLAS_URL = `${import.meta.env.BASE_URL}assets/order-atlas.webp`
+
 const foods = [
   ['apples', 'apples'],
   ['bananas', 'bananas'],
