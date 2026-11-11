@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { OrderResult } from './components/OrderResult'
+import { Waiter } from './components/Waiter'
 import { generateOrder, type Order } from './utils/generateOrder'
 import './App.css'
 
@@ -14,16 +15,19 @@ function App() {
 
   return (
     <main className="game-shell">
-      <div className="game-shell__inner">
-        <OrderResult order={order} number={orderNumber} />
-        <div className="order-action">
-          <span className="order-action__line" aria-hidden="true" />
-          <button className="order-button" type="button" onClick={handleOrder}>
-            <span className="order-button__icon" aria-hidden="true">✦</span>
-            ORDER
-            <span className="order-button__icon" aria-hidden="true">✦</span>
-          </button>
-          <span className="order-action__line" aria-hidden="true" />
+      <div className="scene-layout">
+        <Waiter />
+        <div className="game-shell__inner">
+          <OrderResult order={order} number={orderNumber} />
+          <div className="order-action">
+            <span className="order-action__line" aria-hidden="true" />
+            <button className="order-button" type="button" onClick={handleOrder}>
+              <span className="order-button__icon" aria-hidden="true">✦</span>
+              ORDER
+              <span className="order-button__icon" aria-hidden="true">✦</span>
+            </button>
+            <span className="order-action__line" aria-hidden="true" />
+          </div>
         </div>
       </div>
     </main>

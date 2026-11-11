@@ -19,8 +19,32 @@ button { font: inherit; }
   background: linear-gradient(180deg, rgba(11, 24, 42, .5), rgba(12, 24, 41, .7)), url('/assets/restaurant-bg.webp') center / cover fixed;
 }
 
+.scene-layout {
+  width: min(100%, 1400px);
+  display: grid;
+  grid-template-columns: minmax(190px, 240px) minmax(0, 1fr);
+  align-items: center;
+  gap: 24px;
+}
+
+.waiter {
+  align-self: center;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.waiter img {
+  width: 100%;
+  height: auto;
+  max-height: 420px;
+  object-fit: contain;
+  filter: drop-shadow(4px 12px 9px rgba(0, 0, 0, .42));
+  animation: waiter-bob 4s ease-in-out infinite;
+}
+
 .game-shell__inner {
-  width: min(100%, 1120px);
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -133,9 +157,17 @@ button { font: inherit; }
 .order-button__icon { color: #f6d391; font-size: 15px; }
 
 @keyframes reveal { from { opacity: 0; transform: translateY(10px) scale(.98); } to { opacity: 1; transform: none; } }
+@keyframes waiter-bob { 50% { transform: translateY(-5px) rotate(1deg); } }
+
+@media (max-width: 1000px) and (min-width: 701px) {
+  .scene-layout { grid-template-columns: 160px minmax(0, 1fr); gap: 14px; }
+}
 
 @media (max-width: 700px) {
   .game-shell { padding: 18px 12px 26px; place-items: start center; background-attachment: scroll; }
+  .scene-layout { display: flex; flex-direction: column; align-items: stretch; gap: 3px; }
+  .waiter { align-self: flex-start; width: 118px; height: 142px; margin-left: 7px; }
+  .waiter img { max-height: 142px; }
   .game-shell__inner { gap: 22px; }
   .order-result { min-height: 390px; padding: 23px 13px 26px; border-width: 4px; border-radius: 20px; }
   .order-result::before { inset: 10px; }
@@ -154,6 +186,8 @@ button { font: inherit; }
 }
 
 @media (max-width: 380px) {
+  .waiter { width: 108px; height: 132px; }
+  .waiter img { max-height: 132px; }
   .order-item img { height: 105px; }
   .order-item { font-size: 14px; }
 }
