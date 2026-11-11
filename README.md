@@ -1,6 +1,6 @@
 # Restaurant
 
-A browser mini-game for children practicing English food and drink words. The two menus always show all 31 items. Press **ORDER** for a new random meal with 2–4 different foods and one drink.
+A browser mini-game for children practicing English food and drink words. Press **ORDER** to reveal a new random meal with 2–4 different foods and one drink. All 31 vocabulary items remain in the order pool; only the current order is shown.
 
 ## Run locally
 
@@ -13,7 +13,7 @@ Open the local URL printed by Vite (usually `http://localhost:5173/reast-/`). Fo
 
 Run `npm test` to verify the exact vocabulary, local artwork, and random-order rules.
 
-The game uses local artwork and works without an internet connection after dependencies are installed. The original bistro backdrop and waiter were generated for this project; the menu illustrations are local SVG artwork.
+The game uses local artwork and works without an internet connection after dependencies are installed. The bistro backdrop and all order illustrations were generated for this project. The original SVG menu art remains in the repository as editable source artwork.
 
 ## GitHub Pages
 

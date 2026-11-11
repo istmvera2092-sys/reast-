@@ -9,13 +9,16 @@ export function OrderResult({ order, number }: { order: Order | null; number: nu
         <span className="ticket-star" aria-hidden="true">✧</span>
       </div>
       {order ? (
-        <div className="order-result__items" key={number}>
-          {[...order.food, order.drink].map(item => <div className="order-item" key={item.id}>
-            <img src={item.image} alt={`${item.name} illustration`} />
-            <span>{item.name}</span>
-          </div>)}
+        <div className="order-result__content" key={number}>
+          <p className="order-result__served">Here's your order!</p>
+          <div className="order-result__items">
+            {[...order.food, order.drink].map(item => <div className="order-item" key={item.id}>
+              <img src={item.image} alt={`${item.name} illustration`} />
+              <span>{item.name}</span>
+            </div>)}
+          </div>
         </div>
-      ) : <p className="order-result__prompt">Press ORDER to get your meal!</p>}
+      ) : <div className="order-result__empty"><p className="order-result__prompt">Press ORDER to get your meal!</p></div>}
     </section>
   )
 }
