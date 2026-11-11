@@ -13,7 +13,7 @@ Open the local URL printed by Vite (usually `http://localhost:5173/reast-/`). Fo
 
 Run `npm test` to verify the exact vocabulary, local artwork, and random-order rules.
 
-The game uses local artwork and works without an internet connection after dependencies are installed. The bistro backdrop and all order illustrations were generated for this project. The original SVG menu art remains in the repository as editable source artwork.
+The game uses local artwork and works without an internet connection after dependencies are installed. The bistro backdrop and all order illustrations were generated for this project. Small WebP versions are served from `public/assets/`; the full-resolution PNG originals are kept in `artwork/source/`. Run `npm run optimize:images` to regenerate the WebP files after changing the originals. The original SVG menu art remains in the repository as editable source artwork.
 
 ## GitHub Pages
 

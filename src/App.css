@@ -16,7 +16,7 @@ button { font: inherit; }
   padding: 28px 20px;
   display: grid;
   place-items: center;
-  background: linear-gradient(180deg, rgba(11, 24, 42, .5), rgba(12, 24, 41, .7)), url('/assets/restaurant-bg.png') center / cover fixed;
+  background: linear-gradient(180deg, rgba(11, 24, 42, .5), rgba(12, 24, 41, .7)), url('/assets/restaurant-bg.webp') center / cover fixed;
 }
 
 .game-shell__inner {

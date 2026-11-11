@@ -45,13 +45,13 @@ const drinks = [
 export const FOOD: MenuItem[] = foods.map(([id, name]) => ({
   id,
   name,
-  image: `${import.meta.env.BASE_URL}assets/food/${id}.png`,
+  image: `${import.meta.env.BASE_URL}assets/food/${id}.webp`,
   kind: 'food',
 }))
 
 export const DRINKS: MenuItem[] = drinks.map(([id, name]) => ({
   id,
   name,
-  image: `${import.meta.env.BASE_URL}assets/drinks/${id}.png`,
+  image: `${import.meta.env.BASE_URL}assets/drinks/${id}.webp`,
   kind: 'drink',
 }))

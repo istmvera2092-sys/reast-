@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { existsSync } from 'node:fs'
+import { existsSync, readdirSync, statSync } from 'node:fs'
 import { build } from 'esbuild'
 
 async function loadTypeScript(entryPoint) {
@@ -22,8 +22,16 @@ assert.deepEqual(DRINKS.map(item => item.name), [
 const all = [...FOOD, ...DRINKS]
 assert.equal(new Set(all.map(item => item.id)).size, 31)
 for (const item of all) assert.ok(existsSync(`public${item.image}`), `Missing illustration: ${item.image}`)
-assert.ok(existsSync('public/assets/waiter.png'))
-assert.ok(existsSync('public/assets/restaurant-bg.png'))
+assert.ok(all.every(item => item.image.endsWith('.webp')))
+assert.ok(existsSync('public/assets/waiter.webp'))
+assert.ok(existsSync('public/assets/restaurant-bg.webp'))
+const webpPaths = [...all.map(item => `public${item.image}`), 'public/assets/waiter.webp', 'public/assets/restaurant-bg.webp']
+const webpBytes = webpPaths.reduce((total, path) => total + statSync(path).size, 0)
+assert.ok(webpBytes < 3_000_000, 'Web artwork exceeds the 3 MB asset budget')
+for (const group of ['food', 'drinks']) {
+  assert.equal(readdirSync(`public/assets/${group}`).filter(file => file.endsWith('.png')).length, 0)
+}
+assert.equal(readdirSync('public/assets').filter(file => file.endsWith('.png')).length, 0)
 
 function signature(order) {
   return [...order.food.map(item => item.id).sort(), order.drink.id].join('|')
@@ -49,4 +57,4 @@ assert.equal(seenDrinks.size, 8)
 const forcedFirst = generateOrder(null, () => 0)
 const forcedSecond = generateOrder(forcedFirst, () => 0)
 assert.notEqual(signature(forcedFirst), signature(forcedSecond))
-console.log('Verified exact menu, 33 local assets, and 2000 valid changing orders.')
+console.log(`Verified exact menu, 33 WebP assets (${(webpBytes / 1e6).toFixed(1)} MB), and 2000 valid changing orders.`)
