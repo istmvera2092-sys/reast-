@@ -176,6 +176,42 @@ button { font: inherit; }
 .section-picker__button:hover { filter: brightness(1.14); }
 .section-picker__button:focus-visible { outline: 3px solid #fff5d0; outline-offset: 4px; }
 
+@media (min-aspect-ratio: 17 / 10) {
+  .menu-drawers {
+    --side-gap: calc(50vw - 66.6667vh);
+    position: fixed;
+    overflow: visible;
+  }
+
+  .edge-menu {
+    --panel-width: calc(var(--side-gap) - 44px);
+    width: var(--side-gap);
+    pointer-events: none;
+    transform: none;
+  }
+
+  .edge-menu--base { left: 0; }
+  .edge-menu--extras { right: 0; }
+
+  .edge-menu__handle { pointer-events: auto; }
+  .edge-menu__panel {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-14px);
+    transition: opacity .2s ease, transform .2s ease, visibility .2s;
+  }
+  .edge-menu--extras .edge-menu__panel { transform: translateX(14px); }
+  .edge-menu--open .edge-menu__panel {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    transform: none;
+  }
+  .edge-menu__panel h2, .edge-menu__panel p { text-align: center; }
+  .edge-menu__buttons { max-width: 300px; margin-inline: auto; }
+}
+
 .order-action { width: 100%; display: flex; align-items: center; justify-content: center; gap: 25px; }
 .order-action__line { width: min(18vw, 210px); height: 1px; background: linear-gradient(90deg, transparent, #e1bc77, transparent); }
 .order-button {
