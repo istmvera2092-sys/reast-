@@ -1,4 +1,4 @@
-import { readdir, stat } from 'node:fs/promises'
+import { mkdir, readdir, stat } from 'node:fs/promises'
 import sharp from 'sharp'
 
 let originalBytes = 0
@@ -32,6 +32,15 @@ for (const group of ['food', 'drinks']) {
       iconOptions,
     )
   }
+}
+
+await mkdir('public/assets/sections/thanksgiving', { recursive: true })
+for (const file of (await readdir('artwork/source/thanksgiving')).filter(file => file.endsWith('.png'))) {
+  await optimize(
+    `artwork/source/thanksgiving/${file}`,
+    `public/assets/sections/thanksgiving/${file.replace(/\.png$/, '.webp')}`,
+    iconOptions,
+  )
 }
 
 await optimize('artwork/source/restaurant-bg.png', 'public/assets/restaurant-bg.webp', {

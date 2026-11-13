@@ -7,6 +7,10 @@ export function menuForSections(sections: readonly SectionId[]) {
   const drinks = [...DRINKS]
   for (const section of sections) {
     for (const item of EXTRA_SECTIONS[section].food) {
+      if (item.replaces) {
+        const replaced = food.findIndex(existing => existing.id === item.replaces)
+        if (replaced >= 0) food.splice(replaced, 1)
+      }
       if (!food.some(existing => existing.id === item.id)) food.push(item)
     }
     for (const item of EXTRA_SECTIONS[section].drinks) {
@@ -34,14 +38,14 @@ export function generateOrder(previous?: Order | null, random: () => number = Ma
   const count = 2 + Math.floor(random() * 3)
   const food = shuffled(menu.food, random).slice(0, count)
   let drink = shuffled(menu.drinks, random)[0]
-  const halloweenFood = sections.includes('halloween')
-    ? EXTRA_SECTIONS.halloween.food.filter(item => !FOOD.some(base => base.id === item.id))
-    : []
-  const halloweenDrinks = sections.includes('halloween') ? EXTRA_SECTIONS.halloween.drinks : []
+  const featuredFood = sections.flatMap(section => EXTRA_SECTIONS[section].food)
+    .filter(item => !FOOD.some(base => base.id === item.id))
+  const featuredDrinks = sections.flatMap(section => EXTRA_SECTIONS[section].drinks)
+    .filter(item => !DRINKS.some(base => base.id === item.id))
 
-  if (halloweenFood.length && !food.some(item => halloweenFood.some(extra => extra.id === item.id)) &&
-      !halloweenDrinks.some(item => item.id === drink.id)) {
-    const featured = shuffled([...halloweenFood, ...halloweenDrinks], random)[0]
+  if (featuredFood.length && !food.some(item => featuredFood.some(extra => extra.id === item.id)) &&
+      !featuredDrinks.some(item => item.id === drink.id)) {
+    const featured = shuffled([...featuredFood, ...featuredDrinks], random)[0]
     if (featured.kind === 'drink') drink = featured
     else food[0] = featured
   }
@@ -49,8 +53,8 @@ export function generateOrder(previous?: Order | null, random: () => number = Ma
 
   // A matching selection is rare, but even then the next press must feel new.
   if (previous && signature(order) === signature(previous)) {
-    if (halloweenFood.length && !food.some(item => halloweenFood.some(extra => extra.id === item.id))) {
-      food[0] = halloweenFood[0]
+    if (featuredFood.length && !food.some(item => featuredFood.some(extra => extra.id === item.id))) {
+      food[0] = featuredFood[0]
     } else {
       drink = shuffled(menu.drinks.filter(item => item.id !== previous.drink.id), random)[0]
     }

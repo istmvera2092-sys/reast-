@@ -1,0 +1,152 @@
+{
+  "thanksgiving": {
+    "columns": 4,
+    "rows": 3,
+    "positions": {
+      "food:biscuits": [
+        0,
+        0
+      ],
+      "food:cooked-carrot": [
+        1,
+        0
+      ],
+      "food:corn": [
+        2,
+        0
+      ],
+      "food:cranberry-sauce": [
+        3,
+        0
+      ],
+      "food:mashed-potato": [
+        0,
+        1
+      ],
+      "food:pumpkin-pie": [
+        1,
+        1
+      ],
+      "food:stuffing": [
+        2,
+        1
+      ],
+      "food:turkey": [
+        3,
+        1
+      ],
+      "food:yam": [
+        0,
+        2
+      ]
+    }
+  },
+  "fantasticBeasts": {
+    "columns": 4,
+    "rows": 3,
+    "positions": {
+      "food:bacon-and-eggs": [
+        0,
+        0
+      ],
+      "food:chocolate-frog": [
+        1,
+        0
+      ],
+      "food:fried-chicken": [
+        2,
+        0
+      ],
+      "food:porridge": [
+        3,
+        0
+      ],
+      "food:pumpkin-patties": [
+        0,
+        1
+      ],
+      "food:roasted-potato-and-pumpkin": [
+        1,
+        1
+      ],
+      "food:stew": [
+        2,
+        1
+      ],
+      "food:toast-with-jam": [
+        3,
+        1
+      ],
+      "food:yorkshire-pudding": [
+        0,
+        2
+      ]
+    }
+  },
+  "chineseNewYear": {
+    "columns": 4,
+    "rows": 4,
+    "positions": {
+      "food:cn-baby-bok-choy": [
+        0,
+        0
+      ],
+      "food:cn-chicken": [
+        1,
+        0
+      ],
+      "food:cn-chinese-broccoli": [
+        2,
+        0
+      ],
+      "food:cn-dumplings": [
+        3,
+        0
+      ],
+      "food:cn-fish": [
+        0,
+        1
+      ],
+      "food:cn-lettuce": [
+        1,
+        1
+      ],
+      "food:cn-meatballs": [
+        2,
+        1
+      ],
+      "food:cn-new-year-cake": [
+        3,
+        1
+      ],
+      "food:cn-noodles": [
+        0,
+        2
+      ],
+      "food:cn-oranges": [
+        1,
+        2
+      ],
+      "food:cn-shrimps": [
+        2,
+        2
+      ],
+      "food:cn-spring-rolls": [
+        3,
+        2
+      ],
+      "food:cn-steamed-pork": [
+        0,
+        3
+      ],
+      "food:cn-sweet-rice-balls": [
+        1,
+        3
+      ],
+      "food:cn-tangerines": [
+        2,
+        3
+      ]
+    }
+  }
+}

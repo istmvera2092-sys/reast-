@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { OrderResult } from './components/OrderResult'
 import { Waiter } from './components/Waiter'
-import { EXTRA_SECTIONS, ORDER_ATLAS_URL, type SectionId } from './data/menu'
+import { EXTRA_SECTIONS, ORDER_ATLAS_URL, SECTION_ATLAS_URLS, type SectionId } from './data/menu'
 import { generateOrder, type Order } from './utils/generateOrder'
 import './App.css'
 
@@ -15,6 +15,16 @@ function App() {
     image.src = ORDER_ATLAS_URL
     void image.decode().catch(() => {})
   }, [])
+
+  useEffect(() => {
+    for (const section of selectedSections) {
+      const atlas = EXTRA_SECTIONS[section].atlas
+      if (!atlas) continue
+      const image = new Image()
+      image.src = SECTION_ATLAS_URLS[atlas]
+      void image.decode().catch(() => {})
+    }
+  }, [selectedSections])
 
   function handleOrder() {
     setOrder(previous => generateOrder(previous, Math.random, selectedSections))
@@ -34,7 +44,6 @@ function App() {
         <div className="game-shell__inner">
           <OrderResult order={order} number={orderNumber} />
           <div className="section-picker" role="group" aria-label="Extra menu sections">
-            <span className="section-picker__label">ADD A SECTION</span>
             {(Object.keys(EXTRA_SECTIONS) as SectionId[]).map(section => (
               <button
                 className="section-picker__button"

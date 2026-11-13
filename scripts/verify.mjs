@@ -7,7 +7,7 @@ async function loadTypeScript(entryPoint) {
   return import(`data:text/javascript;base64,${Buffer.from(result.outputFiles[0].contents).toString('base64')}`)
 }
 
-const { FOOD, DRINKS, HALLOWEEN_FOOD, HALLOWEEN_DRINKS } = await loadTypeScript('src/data/menu.ts')
+const { FOOD, DRINKS, HALLOWEEN_FOOD, HALLOWEEN_DRINKS, THANKSGIVING_FOOD, FANTASTIC_BEASTS_FOOD, CHINESE_NEW_YEAR_FOOD } = await loadTypeScript('src/data/menu.ts')
 const { generateOrder, menuForSections } = await loadTypeScript('src/utils/generateOrder.ts')
 
 assert.deepEqual(FOOD.map(item => item.name), [
@@ -20,6 +20,10 @@ assert.deepEqual(DRINKS.map(item => item.name), [
 ])
 assert.deepEqual(HALLOWEEN_FOOD.map(item => item.name), ['melon', 'bacon', 'peas', 'peach', 'toast'])
 assert.deepEqual(HALLOWEEN_DRINKS.map(item => item.name), ['juice'])
+assert.equal(THANKSGIVING_FOOD.length, 9)
+assert.equal(FANTASTIC_BEASTS_FOOD.length, 9)
+assert.equal(CHINESE_NEW_YEAR_FOOD.length, 15)
+assert.ok(CHINESE_NEW_YEAR_FOOD.every(item => item.hideLabel))
 assert.deepEqual(menuForSections([]).food.map(item => item.id), FOOD.map(item => item.id))
 assert.deepEqual(menuForSections([]).drinks.map(item => item.id), DRINKS.map(item => item.id))
 const halloweenMenu = menuForSections(['halloween'])
@@ -28,19 +32,37 @@ assert.equal(halloweenMenu.drinks.length, 9)
 assert.equal(halloweenMenu.food.filter(item => item.id === 'toast').length, 1)
 assert.equal(new Set(halloweenMenu.food.map(item => item.id)).size, 27)
 
-const all = [...halloweenMenu.food, ...halloweenMenu.drinks]
-assert.equal(new Set(all.map(item => item.id)).size, 36)
+const selectedMenu = menuForSections(['halloween', 'thanksgiving', 'fantasticBeasts', 'chineseNewYear'])
+assert.equal(selectedMenu.food.length, 57)
+assert.equal(selectedMenu.drinks.length, 9)
+assert.equal(new Set(selectedMenu.food.map(item => item.id)).size, 57)
+assert.ok(!selectedMenu.food.some(item => ['fish', 'noodles', 'lettuce'].includes(item.id)))
+
+const classicItems = [...halloweenMenu.food, ...halloweenMenu.drinks]
+const all = [...classicItems, ...THANKSGIVING_FOOD, ...FANTASTIC_BEASTS_FOOD, ...CHINESE_NEW_YEAR_FOOD]
+assert.equal(new Set(all.map(item => item.id)).size, 69)
 for (const item of all) assert.ok(existsSync(`public${item.image}`), `Missing illustration: ${item.image}`)
 assert.ok(all.every(item => item.image.endsWith('.webp')))
 const atlas = JSON.parse(readFileSync('src/data/orderAtlas.json', 'utf8'))
 assert.ok(existsSync('public/assets/order-atlas.webp'))
 assert.ok(statSync('public/assets/order-atlas.webp').size < 300_000, 'Order atlas exceeds the 300 KB budget')
 assert.equal(atlas.columns * atlas.rows, 36)
-assert.deepEqual(Object.keys(atlas.positions).sort(), all.map(item => `${item.kind}:${item.id}`).sort())
+assert.deepEqual(Object.keys(atlas.positions).sort(), classicItems.map(item => `${item.kind}:${item.id}`).sort())
 assert.equal(new Set(Object.values(atlas.positions).map(position => position.join(','))).size, 36)
 for (const position of Object.values(atlas.positions)) {
   assert.ok(position[0] >= 0 && position[0] < atlas.columns)
   assert.ok(position[1] >= 0 && position[1] < atlas.rows)
+}
+const sectionAtlases = JSON.parse(readFileSync('src/data/sectionAtlases.json', 'utf8'))
+for (const [key, folder, items] of [
+  ['thanksgiving', 'thanksgiving', THANKSGIVING_FOOD],
+  ['fantasticBeasts', 'fantastic-beasts', FANTASTIC_BEASTS_FOOD],
+  ['chineseNewYear', 'chinese-new-year', CHINESE_NEW_YEAR_FOOD],
+]) {
+  const path = `public/assets/sections/${folder}-atlas.webp`
+  assert.ok(existsSync(path))
+  assert.ok(statSync(path).size < 160_000, `${folder} atlas exceeds the 160 KB budget`)
+  assert.deepEqual(Object.keys(sectionAtlases[key].positions).sort(), items.map(item => `food:${item.id}`).sort())
 }
 assert.ok(existsSync('public/assets/waiter.webp'))
 assert.ok(existsSync('public/assets/restaurant-bg.webp'))
@@ -98,4 +120,12 @@ const forcedHalloweenFirst = generateOrder(null, () => 0, ['halloween'])
 const forcedHalloweenSecond = generateOrder(forcedHalloweenFirst, () => 0, ['halloween'])
 assert.notEqual(signature(forcedHalloweenFirst), signature(forcedHalloweenSecond))
 assert.ok(forcedHalloweenSecond.drink.id === 'juice' || forcedHalloweenSecond.food.some(item => ['melon', 'bacon', 'peas', 'peach'].includes(item.id)))
-console.log(`Verified classic and Halloween menus, ${(statSync('public/assets/order-atlas.webp').size / 1e3).toFixed(0)} KB order atlas, 38 source WebPs, and 4000 valid changing orders.`)
+for (const [section, items] of [
+  ['thanksgiving', THANKSGIVING_FOOD],
+  ['fantasticBeasts', FANTASTIC_BEASTS_FOOD],
+  ['chineseNewYear', CHINESE_NEW_YEAR_FOOD],
+]) {
+  const order = generateOrder(null, () => 0, [section])
+  assert.ok(order.food.some(item => items.some(extra => extra.id === item.id)))
+}
+console.log('Verified 4 selectable sections, 4 compact atlases, and valid changing orders.')

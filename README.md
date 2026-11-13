@@ -15,9 +15,11 @@ Open the local URL printed by Vite (usually `http://localhost:5173/reast-/`). Fo
 
 Run `npm test` to verify the exact vocabulary, local artwork, and random-order rules.
 
-The game uses local artwork and works without an internet connection after dependencies are installed. The bistro backdrop and all order illustrations were generated for this project. A compact WebP atlas is preloaded when the game opens, so pressing ORDER does not fetch separate food images. Small individual WebPs are also kept in `public/assets/`, and the full-resolution PNG originals are in `artwork/source/`. Run `npm run optimize:images` to regenerate the WebPs and atlas after changing the originals. The original SVG menu art remains in the repository as editable source artwork.
+The game uses local artwork and works without an internet connection after dependencies are installed. The classic WebP atlas is preloaded when the game opens; each added section has a small atlas loaded when its button is selected. Pressing ORDER does not fetch separate food images. Optimized WebPs are in `public/assets/`; source PNGs for the classic, Halloween, and Thanksgiving art are in `artwork/source/`. The Fantastic Beasts and Chinese New Year artwork came from the supplied archives. Run `npm run optimize:images` to regenerate the WebPs from source PNGs and rebuild all atlases.
 
 Select **HALLOWEEN** to add melon, bacon, peas, toast, peach, and red juice to the random orders. Each Halloween order includes at least one new item from that section. The juice is labeled simply `juice`. Toast shares its existing illustration and is never duplicated in the order pool. Select the button again to use the classic menu only; the choice applies to the next ORDER press.
+
+The other buttons add **THANKSGIVING DAY** (9 foods), **FANTASTIC BEASTS** (9 foods), and **CHINESE NEW YEAR** (15 foods). Chinese New Year pictures appear without visible item names. Its fish, noodles, and lettuce illustrations replace the matching classic ones while that section is selected. Multiple sections can be selected together.
 
 ## GitHub Pages
 

@@ -1,9 +1,8 @@
 import type { CSSProperties } from 'react'
 import atlas from '../data/orderAtlas.json'
-import { ORDER_ATLAS_URL } from '../data/menu'
+import sectionAtlases from '../data/sectionAtlases.json'
+import { ORDER_ATLAS_URL, SECTION_ATLAS_URLS } from '../data/menu'
 import type { Order } from '../utils/generateOrder'
-
-const positions: Record<string, number[]> = atlas.positions
 
 export function OrderResult({ order, number }: { order: Order | null; number: number }) {
   return (
@@ -18,18 +17,20 @@ export function OrderResult({ order, number }: { order: Order | null; number: nu
           <p className="order-result__served">Here's your order!</p>
           <div className="order-result__items">
             {[...order.food, order.drink].map(item => {
+              const itemAtlas = item.atlas ? sectionAtlases[item.atlas] : atlas
+              const positions: Record<string, number[]> = itemAtlas.positions
               const [column, row] = positions[`${item.kind}:${item.id}`]
               const position = {
                 '--atlas-column': column,
                 '--atlas-row': row,
-                '--atlas-columns': atlas.columns,
-                '--atlas-rows': atlas.rows,
+                '--atlas-columns': itemAtlas.columns,
+                '--atlas-rows': itemAtlas.rows,
               } as CSSProperties
-              return <div className="order-item" key={item.id}>
+              return <div className={`order-item ${item.hideLabel ? 'order-item--image-only' : ''}`} key={item.id}>
                 <div className="order-item__picture">
-                  <img src={ORDER_ATLAS_URL} alt={`${item.name} illustration`} style={position} />
+                  <img src={item.atlas ? SECTION_ATLAS_URLS[item.atlas] : ORDER_ATLAS_URL} alt={`${item.name} illustration`} style={position} />
                 </div>
-                <span>{item.name}</span>
+                {!item.hideLabel && <span>{item.name}</span>}
               </div>
             })}
           </div>
