@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { OrderResult } from './components/OrderResult'
 import { Waiter } from './components/Waiter'
 import { BASE_SECTIONS, DEFAULT_SECTIONS, EXTRA_SECTIONS, ORDER_ATLAS_URL, SECTIONS, SECTION_ATLAS_URLS, type SectionId } from './data/menu'
@@ -6,21 +6,25 @@ import { generateOrder, menuForSections, type Order } from './utils/generateOrde
 import './App.css'
 
 type MenuSide = 'base' | 'extras'
+type EditableSelection = Partial<Record<SectionId, string[]>>
+
+function sectionItems(section: SectionId) {
+  return [...SECTIONS[section].food, ...SECTIONS[section].drinks]
+}
 
 function App() {
   const [order, setOrder] = useState<Order | null>(null)
   const [orderNumber, setOrderNumber] = useState(0)
-  const [selectedSections, setSelectedSections] = useState<SectionId[]>([...DEFAULT_SECTIONS])
+  const [selection, setSelection] = useState<EditableSelection>(() => Object.fromEntries(
+    DEFAULT_SECTIONS.map(section => [section, sectionItems(section).map(item => item.id)]),
+  ))
   const [hoveredMenu, setHoveredMenu] = useState<MenuSide | null>(null)
   const [focusedMenu, setFocusedMenu] = useState<MenuSide | null>(null)
   const [pinnedMenu, setPinnedMenu] = useState<MenuSide | null>(null)
-  const menu = menuForSections(selectedSections)
-  const canOrder = menu.food.length >= 2 && menu.drinks.length > 0
-  const prompt = menu.food.length < 2
-    ? 'Choose a food section to order!'
-    : menu.drinks.length === 0
-      ? 'Choose DRINKS or HALLOWEEN for a drink!'
-      : 'Press ORDER to get your meal!'
+  const selectedSections = useMemo(() => Object.keys(selection) as SectionId[], [selection])
+  const menu = menuForSections(selectedSections, selection)
+  const canOrder = menu.food.length + menu.drinks.length > 0
+  const prompt = canOrder ? 'Press ORDER to get your meal!' : 'Choose a food or drink to order!'
 
   useEffect(() => {
     const image = new Image()
@@ -40,32 +44,62 @@ function App() {
 
   function handleOrder() {
     if (!canOrder) return
-    setOrder(previous => generateOrder(previous, Math.random, selectedSections))
+    setOrder(previous => generateOrder(previous, Math.random, selectedSections, selection))
     setOrderNumber(number => number + 1)
   }
 
   function toggleSection(section: SectionId) {
-    setSelectedSections(previous => previous.includes(section)
-      ? previous.filter(value => value !== section)
-      : [...previous, section])
+    const allIds = sectionItems(section).map(item => item.id)
+    setSelection(previous => {
+      const next = { ...previous }
+      if (previous[section]?.length === allIds.length) delete next[section]
+      else next[section] = allIds
+      return next
+    })
     setOrder(null)
-    setPinnedMenu(null)
   }
 
-  function sectionButton(section: SectionId, base = false) {
-    return <button
-      className={`section-picker__button ${base ? 'section-picker__button--base' : ''}`}
-      type="button"
-      aria-pressed={selectedSections.includes(section)}
-      onClick={event => {
-        toggleSection(section)
-        if (event.detail > 0) event.currentTarget.blur()
-      }}
-      key={section}
-    >
-      <span aria-hidden="true">✦</span>
-      {SECTIONS[section].label}
-    </button>
+  function toggleItem(section: SectionId, itemId: string) {
+    setSelection(previous => {
+      const chosen = previous[section] ?? []
+      const next = { ...previous }
+      const updated = chosen.includes(itemId)
+        ? chosen.filter(id => id !== itemId)
+        : [...chosen, itemId]
+      if (updated.length) next[section] = updated
+      else delete next[section]
+      return next
+    })
+    setOrder(null)
+  }
+
+  function sectionControl(section: SectionId, base = false) {
+    const items = sectionItems(section)
+    const chosen = selection[section] ?? []
+    const groupState = chosen.length === items.length ? true : chosen.length ? 'mixed' : false
+    return <div className="section-picker" key={section}>
+      <button
+        className={`section-picker__button ${base ? 'section-picker__button--base' : ''}`}
+        type="button"
+        aria-pressed={groupState}
+        onClick={() => toggleSection(section)}
+      >
+        <span aria-hidden="true">✦</span>
+        {SECTIONS[section].label}
+      </button>
+      <details className="section-picker__details">
+        <summary>Choose individual items</summary>
+        <div className="section-picker__items">
+          {items.map(item => <button
+            className="section-picker__item"
+            type="button"
+            aria-pressed={chosen.includes(item.id)}
+            onClick={() => toggleItem(section, item.id)}
+            key={item.id}
+          >{item.name}</button>)}
+        </div>
+      </details>
+    </div>
   }
 
   function menuDrawer(side: MenuSide, sections: SectionId[]) {
@@ -113,9 +147,10 @@ function App() {
       </button>
       <div className="edge-menu__panel" id={panelId} aria-hidden={!open} inert={!open}>
         <h2>{base ? 'FOOD & DRINKS' : 'SPECIAL MENUS'}</h2>
-        <p>{base ? 'Choose your food and drink groups.' : 'Add a themed section to your order.'}</p>
+        <p>Choose whole groups or individual items.</p>
+        <button className="edge-menu__clear" type="button" onClick={() => { setSelection({}); setOrder(null) }}>CLEAR ALL</button>
         <div className="edge-menu__buttons">
-          {sections.map(section => sectionButton(section, base))}
+          {sections.map(section => sectionControl(section, base))}
         </div>
       </div>
     </aside>

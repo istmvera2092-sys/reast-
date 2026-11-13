@@ -16,7 +16,7 @@ export function OrderResult({ order, number, prompt }: { order: Order | null; nu
         <div className="order-result__content" key={number}>
           <p className="order-result__served">Here's your order!</p>
           <div className="order-result__items">
-            {[...order.food, order.drink].map(item => {
+            {[...order.food, ...(order.drink ? [order.drink] : [])].map(item => {
               const itemAtlas = item.atlas ? sectionAtlases[item.atlas] : atlas
               const positions: Record<string, number[]> = itemAtlas.positions
               const [column, row] = positions[`${item.kind}:${item.id}`]
