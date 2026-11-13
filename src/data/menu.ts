@@ -61,6 +61,9 @@ export const FOOD: MenuItem[] = foods.map(([id, name]) => ({
   kind: 'food',
 }))
 
+export const FOOD_1 = FOOD.filter(item => item.name[0] >= 'a' && item.name[0] <= 'l')
+export const FOOD_2 = FOOD.filter(item => item.name[0] >= 'm' && item.name[0] <= 'z')
+
 export const DRINKS: MenuItem[] = drinks.map(([id, name]) => ({
   id,
   name,
@@ -152,6 +155,12 @@ export const CHINESE_NEW_YEAR_FOOD: MenuItem[] = chineseFoods.map(item => ({
   hideLabel: true,
 }))
 
+export const BASE_SECTIONS = {
+  food1: { label: 'FOOD 1 · A–L', food: FOOD_1, drinks: [], atlas: null },
+  food2: { label: 'FOOD 2 · M–Z', food: FOOD_2, drinks: [], atlas: null },
+  drinks: { label: 'DRINKS', food: [], drinks: DRINKS, atlas: null },
+} as const
+
 export const EXTRA_SECTIONS = {
   halloween: { label: 'HALLOWEEN', food: HALLOWEEN_FOOD, drinks: HALLOWEEN_DRINKS, atlas: null },
   thanksgiving: { label: 'THANKSGIVING DAY', food: THANKSGIVING_FOOD, drinks: [], atlas: 'thanksgiving' },
@@ -159,4 +168,7 @@ export const EXTRA_SECTIONS = {
   chineseNewYear: { label: 'CHINESE NEW YEAR', food: CHINESE_NEW_YEAR_FOOD, drinks: [], atlas: 'chineseNewYear' },
 } as const
 
-export type SectionId = keyof typeof EXTRA_SECTIONS
+export const SECTIONS = { ...BASE_SECTIONS, ...EXTRA_SECTIONS } as const
+
+export type SectionId = keyof typeof SECTIONS
+export const DEFAULT_SECTIONS: readonly SectionId[] = ['food1', 'food2', 'drinks']

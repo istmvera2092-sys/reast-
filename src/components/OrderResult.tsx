@@ -4,7 +4,7 @@ import sectionAtlases from '../data/sectionAtlases.json'
 import { ORDER_ATLAS_URL, SECTION_ATLAS_URLS } from '../data/menu'
 import type { Order } from '../utils/generateOrder'
 
-export function OrderResult({ order, number }: { order: Order | null; number: number }) {
+export function OrderResult({ order, number, prompt }: { order: Order | null; number: number; prompt: string }) {
   return (
     <section className={`order-result ${order ? 'order-result--filled' : ''}`} aria-labelledby="order-title" aria-live="polite" aria-atomic="true">
       <div className="order-result__heading">
@@ -35,7 +35,7 @@ export function OrderResult({ order, number }: { order: Order | null; number: nu
             })}
           </div>
         </div>
-      ) : <div className="order-result__empty"><p className="order-result__prompt">Press ORDER to get your meal!</p></div>}
+      ) : <div className="order-result__empty"><p className="order-result__prompt">{prompt}</p></div>}
     </section>
   )
 }
