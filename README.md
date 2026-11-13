@@ -19,6 +19,8 @@ The game uses local artwork and works without an internet connection after depen
 
 The basic vocabulary is split into three selectable groups: **FOOD 1 · A–L** (11 foods), **FOOD 2 · M–Z** (12 foods), and **DRINKS** (8 drinks). All three start selected. Turning a group off removes its items from the next order. ORDER is available when the selected groups contain at least two foods and one drink.
 
+The group buttons live in a blue panel behind the **MENU** arrow on the left; themed buttons live behind the **THEMES** arrow on the right. Point at either arrow to reveal its panel. On touch screens, tap the arrow. The main screen shows the waiter, YOUR ORDER, and ORDER.
+
 Select **HALLOWEEN** to add melon, bacon, peas, toast, peach, and red juice to the random orders. Each Halloween order includes at least one new item from that section. The juice is labeled simply `juice`. Toast shares its existing illustration and is never duplicated in the order pool. Section changes clear the current order; press ORDER to draw from the new selection.
 
 The other buttons add **THANKSGIVING DAY** (9 foods), **FANTASTIC BEASTS** (9 foods), and **CHINESE NEW YEAR** (15 foods). Chinese New Year pictures appear without visible item names. Its fish, noodles, and lettuce illustrations replace the matching classic ones while that section is selected. Multiple sections can be selected together.

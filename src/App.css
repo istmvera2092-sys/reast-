@@ -20,6 +20,7 @@ body {
 button { font: inherit; }
 
 .game-shell {
+  position: relative;
   width: min(100vw, 133.333vh);
   aspect-ratio: 4 / 3;
   padding: clamp(12px, 2vw, 28px);
@@ -149,9 +150,26 @@ button { font: inherit; }
 .order-item__picture { position: relative; width: 100%; max-width: 160px; aspect-ratio: 1; overflow: hidden; }
 .order-item__picture img { position: absolute; display: block; width: calc(100% * var(--atlas-columns)); height: calc(100% * var(--atlas-rows)); max-width: none; left: calc(-100% * var(--atlas-column)); top: calc(-100% * var(--atlas-row)); }
 
-.section-picker { width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; }
-.section-picker__group { width: 100%; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px; }
+.menu-drawers { position: absolute; inset: 0; z-index: 5; overflow: hidden; pointer-events: none; }
+.edge-menu { --panel-width: min(280px, calc(100vw - 54px)); position: absolute; top: 0; bottom: 0; width: calc(var(--panel-width) + 44px); display: flex; align-items: center; pointer-events: auto; transition: transform .24s ease; }
+.edge-menu--base { left: 0; flex-direction: row-reverse; transform: translateX(calc(0px - var(--panel-width))); }
+.edge-menu--extras { right: 0; transform: translateX(var(--panel-width)); }
+.edge-menu--open { transform: none; }
+.edge-menu__panel { flex: 1; min-width: 0; height: 100%; padding: 29px 17px; overflow-y: auto; background: linear-gradient(155deg, #174362, #0d2a47 70%); color: #fff5dc; box-shadow: 0 15px 36px rgba(1, 12, 28, .45); }
+.edge-menu--base .edge-menu__panel { border-right: 2px solid #d8b881; }
+.edge-menu--extras .edge-menu__panel { border-left: 2px solid #d8b881; }
+.edge-menu__panel h2 { margin: 0 0 8px; font: 800 24px Georgia, serif; letter-spacing: .06em; }
+.edge-menu__panel p { margin: 0 0 24px; color: #c9d7df; font-size: 14px; line-height: 1.4; }
+.edge-menu__buttons { display: flex; flex-direction: column; gap: 11px; }
+.edge-menu__handle { width: 44px; height: 112px; padding: 8px 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; flex: 0 0 44px; border: 2px solid #d9b47b; background: #153b5b; color: #fff5dc; box-shadow: 0 6px 18px rgba(2, 15, 31, .4); cursor: pointer; }
+.edge-menu--base .edge-menu__handle { border-left: 0; border-radius: 0 14px 14px 0; }
+.edge-menu--extras .edge-menu__handle { border-right: 0; border-radius: 14px 0 0 14px; }
+.edge-menu__handle:hover { background: #245574; }
+.edge-menu__handle:focus-visible { outline: 3px solid #fff3bf; outline-offset: -5px; }
+.edge-menu__arrow { font: 700 30px/1 Georgia, serif; }
+.edge-menu__handle-label { font-size: 10px; font-weight: 800; letter-spacing: .14em; writing-mode: vertical-rl; }
 .section-picker__button { min-height: 38px; padding: 6px 12px; display: inline-flex; align-items: center; gap: 7px; border: 2px solid #e9bc80; border-radius: 999px; background: #34243e; color: #fff5de; box-shadow: 0 4px 0 #1b1528; font: 800 14px Georgia, serif; letter-spacing: .05em; cursor: pointer; }
+.edge-menu__buttons .section-picker__button { width: 100%; justify-content: center; }
 .section-picker__button span { color: #f3b469; }
 .section-picker__button[aria-pressed="true"] { border-color: #ffe1a7; background: #a64b2d; box-shadow: 0 4px 0 #61281f, 0 0 0 3px rgba(255, 214, 147, .22); }
 .section-picker__button--base[aria-pressed="true"] { border-color: #b7d5c9; background: #365760; box-shadow: 0 4px 0 #213b43, 0 0 0 3px rgba(188, 223, 213, .19); }
@@ -197,24 +215,26 @@ button { font: inherit; }
   .order-result__items { gap: 8px; }
   .order-item { width: 132px; padding: 8px 5px 10px; gap: 5px; font-size: 15px; }
   .order-item__picture { max-width: 120px; }
-  .game-shell__inner { gap: 14px; }
+  .game-shell__inner { gap: 18px; }
   .order-button { min-height: 62px; font-size: 26px; }
 }
 
 @media (min-width: 701px) and (max-height: 650px) {
   .scene-layout { grid-template-columns: 120px minmax(0, 1fr); gap: 8px; }
   .waiter { width: 250px; }
-  .order-result { min-height: clamp(340px, calc(100vh - 235px), 410px); padding: 12px 14px 16px; border-width: 4px; }
+  .order-result { min-height: min(410px, calc(100vh - 130px)); padding: 12px 14px 16px; border-width: 4px; }
   .order-result h2 { font-size: 28px; }
   .order-result__heading { padding-bottom: 8px; }
   .order-result__served { margin: 10px 0 8px; font-size: 17px; }
-  .order-result__empty { min-height: 250px; }
+  .order-result__empty { min-height: 300px; }
   .order-result__items { gap: 7px; }
   .order-item { width: 110px; padding: 6px 4px 8px; font-size: 13px; }
   .order-item__picture { max-width: 94px; }
-  .game-shell__inner { gap: 9px; }
-  .section-picker { gap: 5px; }
-  .section-picker__group { gap: 5px; }
+  .game-shell__inner { gap: 12px; }
+  .edge-menu__panel { padding: 21px 14px; }
+  .edge-menu__panel h2 { font-size: 21px; }
+  .edge-menu__panel p { margin-bottom: 17px; }
+  .edge-menu__buttons { gap: 8px; }
   .section-picker__button { min-height: 34px; padding: 4px 12px; font-size: 13px; }
   .order-button { min-height: 54px; min-width: 225px; font-size: 22px; }
 }
@@ -226,6 +246,7 @@ button { font: inherit; }
 @media (max-width: 700px) {
   body { display: block; }
   .game-shell { width: 100%; min-height: 100vh; aspect-ratio: auto; padding: 18px 12px 26px; place-items: start center; overflow: visible; background-attachment: scroll; }
+  .menu-drawers { position: fixed; }
   .scene-layout { display: flex; flex-direction: column; align-items: stretch; gap: 3px; }
   .waiter { align-self: flex-start; width: clamp(180px, 52vw, 250px); margin-left: 7px; transform: none; }
   .game-shell__inner { gap: 22px; }
